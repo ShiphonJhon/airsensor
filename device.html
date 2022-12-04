@@ -1,0 +1,56 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta charset="utf-8">
+<title>DeviceNameGet</title><head>
+
+<body>
+    <h1>テスト</h1>
+    <p>デバイス名</p>
+
+    <select id="select01">
+        <option disabled selected>選択してください。</option>
+    </select>
+    <br></br>
+
+
+
+    <div id="result"></div>
+
+<script>
+
+    let jsonObj = [];
+
+    const select01 = document.querySelector("#select01");
+
+    function setChoice(){
+        for ( let item of jsonObj){
+            //console.log(item.DeviceID);
+            let list01 = document.createElement('option');
+            list01.value = item.DeviceID; 
+            list01.innerHTML = item.DeviceID;
+            select01.appendChild(list01);
+        }
+    } 
+
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function(){
+        if(xhr.readyState == 4 && xhr.status == 200){
+            //document.getElementById("result").innerHTML = xhr.responseText;
+            jsonStr = xhr.responseText;
+            jsonObj = JSON.parse(jsonStr);
+
+            setChoice();
+
+        }
+    }
+    xhr.open("GET", "http://ponta:8080/airsensor/getdevice.php");
+    xhr.send();
+
+    select01.addEventListener("change", function(){
+        console.log(this.value);
+    });
+
+</script>
+</body>
+</html>
